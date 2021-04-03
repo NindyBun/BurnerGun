@@ -1,8 +1,13 @@
 package com.nindybun.burnergun.common;
 
+import com.nindybun.burnergun.client.ClientSetup;
+import com.nindybun.burnergun.client.KeyInputHandler;
+import com.nindybun.burnergun.client.Keybinds;
 import com.nindybun.burnergun.client.particles.ModParticles;
 import com.nindybun.burnergun.common.blocks.ModBlocks;
+import com.nindybun.burnergun.common.containers.ModContainers;
 import com.nindybun.burnergun.common.items.ModItems;
+import com.nindybun.burnergun.common.network.PacketHandler;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -27,7 +32,7 @@ public class BurnerGun {
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModItems.UPGRADE_ITEMS.register(modEventBus);
-        //ModContainers.CONTAINERS.register(modEventBus);
+        ModContainers.CONTAINERS.register(modEventBus);
         ModParticles.PARTICLE.register(modEventBus);
 
         modEventBus.addListener(this::setup);
@@ -41,15 +46,15 @@ public class BurnerGun {
 
     private void setup(final FMLCommonSetupEvent event)
     {
-        //PacketHandler.register();
+        PacketHandler.register();
     }
 
     private void setupClient(final FMLClientSetupEvent event)
     {
-        //ClientSetup.setup();
+        ClientSetup.setup();
 
-        //Keybinds.register();
-        //MinecraftForge.EVENT_BUS.register(new KeyInputHandler());
+        Keybinds.register();
+        MinecraftForge.EVENT_BUS.register(new KeyInputHandler());
     }
 
 

@@ -1,0 +1,62 @@
+{
+  "item.burnergun.magnet_upgrade": "Magnet Upgrade",
+  "item.burnergun.silk_touch_upgrade":  "Silk Touch Upgrade",
+  "item.burnergun.light_upgrade": "Light Upgrade",
+  "item.burnergun.light": "Light",
+  "item.burnergun.auto_fuel_upgrade": "Auto Fuel",
+  "item.burnergun.auto_smelt_upgrade": "Auto Smelt",
+  "item.burnergun.trash_upgrade": "Trash Upgrade",
+  "item.burnergun.upgrade_bag": "Upgrade Bag",
+
+  "item.burnergun.base_tier_1": "Base Tier 1",
+  "item.burnergun.base_tier_2": "Base Tier 2",
+  "item.burnergun.base_tier_3": "Base Tier 3",
+  "item.burnergun.base_tier_4": "Base Tier 4",
+  "item.burnergun.base_tier_5": "Base Tier 5",
+
+  "item.burnergun.fortune_1_upgrade":  "Fortune 1 Upgrade",
+  "item.burnergun.fortune_2_upgrade":  "Fortune 2 Upgrade",
+  "item.burnergun.fortune_3_upgrade":  "Fortune 3 Upgrade",
+  "item.burnergun.focal_point_1_upgrade": "Focal Point 1 Upgrade",
+  "item.burnergun.focal_point_2_upgrade": "Focal Point 2 Upgrade",
+  "item.burnergun.focal_point_3_upgrade": "Focal Point 3 Upgrade",
+  "item.burnergun.horizontal_expansion_1_upgrade": "Horizontal Expansion 1 Upgrade",
+  "item.burnergun.horizontal_expansion_2_upgrade": "Horizontal Expansion 2 Upgrade",
+  "item.burnergun.horizontal_expansion_3_upgrade": "Horizontal Expansion 3 Upgrade",
+  "item.burnergun.horizontal_expansion_4_upgrade": "Horizontal Expansion 4 Upgrade",
+  "item.burnergun.vertical_expansion_1_upgrade": "Vertical Expansion 1 Upgrade",
+  "item.burnergun.vertical_expansion_2_upgrade": "Vertical Expansion 2 Upgrade",
+  "item.burnergun.vertical_expansion_3_upgrade": "Vertical Expansion 3 Upgrade",
+  "item.burnergun.vertical_expansion_4_upgrade": "Vertical Expansion 4 Upgrade",
+  "item.burnergun.fuel_efficiency_1_upgrade": "Fuel Efficiency 1 Upgrade",
+  "item.burnergun.fuel_efficiency_2_upgrade": "Fuel Efficiency 2 Upgrade",
+  "item.burnergun.fuel_efficiency_3_upgrade": "Fuel Efficiency 3 Upgrade",
+  "item.burnergun.fuel_efficiency_4_upgrade": "Fuel Efficiency 4 Upgrade",
+  "item.burnergun.fuel_efficiency_5_upgrade": "Fuel Efficiency 5 Upgrade",
+
+  "tooltip.burnergun.magnet": "Transports block drops to your inventory.",
+  "tooltip.burnergun.light": "Harnesses the fuel inefficiency to form light.",
+  "tooltip.burnergun.focal_point": "Increases max reach to ",
+  "tooltip.burnergun.horizontal_expansion": "Increases mining width to ",
+  "tooltip.burnergun.vertical_expansion": "Increases mining height to ",
+  "tooltip.burnergun.fuel_efficiency": "Increases fuel efficiency to ",
+  "tooltip.burnergun.auto_fuel": "Inserts fuel from inventory into tool if needed.",
+  "tooltip.burnergun.trash": "Voids block drops.",
+  "tooltip.burnergun.upgrade_bag": "Holds upgrades for later use. Can also hold fuel items.",
+
+  "tooltip.burnergun.base_tier_1": "Used for basic tiered upgrades.",
+  "tooltip.burnergun.base_tier_2": "Used for tiered 2 upgrades.",
+  "tooltip.burnergun.base_tier_3": "Used for tiered 3 upgrades.",
+  "tooltip.burnergun.base_tier_4": "Used for tiered 4 upgrades.",
+  "tooltip.burnergun.base_tier_5": "Used for tiered 5 upgrades.",
+
+  "item.burnergun.burner_gun":  "Burner Gun",
+
+  "block.burnergun.light": "Light",
+
+  "burnergun": "Burner Gun",
+
+  "key.burnergun_gui_key": "Burner Gun Gui",
+  "key.categories.burnergun": "Burner Gun"
+
+}
