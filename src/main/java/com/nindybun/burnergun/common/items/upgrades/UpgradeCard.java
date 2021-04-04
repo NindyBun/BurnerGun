@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class UpgradeCard extends Item {
-    public static Upgrade upgrade;
+    Upgrade upgrade;
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {

@@ -217,7 +217,7 @@ public class BurnerGun extends ToolItem{
         int extraUse = 0;
         List<UpgradeCard> upgrades = getUpgrades(stack);
         if (!upgrades.isEmpty()){
-            extraUse = upgrades.stream().mapToInt(upgradeCard -> upgradeCard.upgrade.getCost()).sum();
+            extraUse = upgrades.stream().mapToInt(upgradeCard -> upgradeCard.getUpgrade().getCost()).sum();
         }
         return (base_use + extraUse) - ((base_use + extraUse) * getFuelEfficiency(stack));
     }
@@ -355,7 +355,7 @@ public class BurnerGun extends ToolItem{
                                 break;
                             }
                         }
-                        if (!loot.copy().toString().contains("ingot"))
+                        if (!loot.copy().toString().contains("ingot") || loot.copy() != Items.CHARCOAL.getDefaultInstance())
                             break;
                     }
                 });

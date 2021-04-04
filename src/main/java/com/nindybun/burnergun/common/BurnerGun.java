@@ -61,7 +61,7 @@ public class BurnerGun {
     public static ItemGroup itemGroup = new ItemGroup(BurnerGun.MOD_ID) {
         @Override
         public ItemStack createIcon() {
-            return null;
+            return new ItemStack(ModItems.BURNER_GUN.get());
         }
     };
 }

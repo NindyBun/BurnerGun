@@ -8,6 +8,7 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,7 +44,7 @@ public class BurnerGunScreen extends ContainerScreen<BurnerGunContainer> {
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int x, int y) {
         String name = "Burner Gun";
-        this.font.drawString(matrixStack, name, (this.width - this.xSize)/2-name.length()/2, -8, Color.WHITE.getRGB());
+        this.font.drawString(matrixStack, name, 62, -8, Color.WHITE.getRGB());
     }
 
     private static final Logger LOGGER = LogManager.getLogger();

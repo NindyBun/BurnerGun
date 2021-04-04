@@ -43,6 +43,9 @@
   "tooltip.burnergun.auto_fuel": "Inserts fuel from inventory into tool if needed.",
   "tooltip.burnergun.trash": "Voids block drops.",
   "tooltip.burnergun.upgrade_bag": "Holds upgrades for later use. Can also hold fuel items.",
+  "tooltip.burnergun.auto_smelt": "Smelts block drops.",
+  "tooltip.burnergun.fortune": "Adds fortune.",
+  "tooltip.burnergun.silk_touch": "Adds silk touch.",
 
   "tooltip.burnergun.base_tier_1": "Used for basic tiered upgrades.",
   "tooltip.burnergun.base_tier_2": "Used for tiered 2 upgrades.",
@@ -54,7 +57,7 @@
 
   "block.burnergun.light": "Light",
 
-  "burnergun": "Burner Gun",
+  "itemGroup.burnergun": "Burner Gun",
 
   "key.burnergun_gui_key": "Burner Gun Gui",
   "key.categories.burnergun": "Burner Gun"
