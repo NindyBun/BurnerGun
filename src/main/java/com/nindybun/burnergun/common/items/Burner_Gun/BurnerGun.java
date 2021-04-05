@@ -57,8 +57,16 @@ import java.util.function.Supplier;
 public class BurnerGun extends ToolItem{
     private static final Set<Block> EFFECTIVE = Sets.newHashSet();
     private static final int base_use = 100;
-    private static final int base_buffer = 250_000;
+    private static final int base_buffer = 100_000;
     IRecipeType<? extends AbstractCookingRecipe> recipeType = IRecipeType.SMELTING;
+    private static final List<Item> smeltingFilter = new ArrayList<Item>(){
+        {
+            add(Items.CHARCOAL);
+            add(Items.IRON_INGOT);
+            add(Items.GOLD_INGOT);
+        }
+
+    };
 
     public BurnerGun() {
         super(0, 0, ModTier.TIER, EFFECTIVE,
@@ -151,6 +159,9 @@ public class BurnerGun extends ToolItem{
         if (!nbt.contains("FuelValue")){
             nbt.putInt("FuelValue", 0);
         }
+        if (!nbt.contains("HarvestLevel")){
+            nbt.putInt("HarvestLevel", 2);
+        }
         stack.setTag(nbt);
     }
 ////////////////////////////////////////////////////////////////////////
@@ -236,6 +247,10 @@ public class BurnerGun extends ToolItem{
 ////////////////////////////////////////////////////////////////////////
     public double getRange(ItemStack stack){
         return getUpgradeByUpgrade(stack, Upgrade.FOCAL_POINT_1) != null ? getUpgradeByUpgrade(stack, Upgrade.FOCAL_POINT_1).getExtraValue() : 5;
+    }
+////////////////////////////////////////////////////////////////////////
+    public int getHarvestLevel(ItemStack stack){
+        return stack.getTag().getInt("HarvestLevel");
     }
 ////////////////////////////////////////////////////////////////////////
     //Returns Upgrade cards
@@ -355,7 +370,7 @@ public class BurnerGun extends ToolItem{
                                 break;
                             }
                         }
-                        if (!loot.copy().toString().contains("ingot") || loot.copy() != Items.CHARCOAL.getDefaultInstance())
+                        if (!smeltingFilter.contains(loot.copy().getItem()))
                             break;
                     }
                 });
@@ -365,49 +380,50 @@ public class BurnerGun extends ToolItem{
     }
 
     public Boolean breakBlock(ItemStack stack, BlockState state, Block block, BlockPos pos, PlayerEntity player, World world, BlockRayTraceResult ray){
-        if (state.getBlockHardness(world, pos) == -1.0)
-            return false;
+
         List<ItemStack> list = state.getDrops(new LootContext.Builder((ServerWorld) world)
                 .withParameter(LootParameters.TOOL, stack)
                 .withParameter(LootParameters.field_237457_g_, new Vector3d(pos.getX(), pos.getY(), pos.getZ()))
                 .withParameter(LootParameters.BLOCK_STATE, state)
         );
         if (getfuelValue(stack) >= getUseValue(stack) && !(block instanceof Light)){
+            setFuelValue(stack, 1, player);
+            if (state.getBlockHardness(world, pos) == -1.0 || state.getHarvestLevel() > getHarvestLevel(stack))
+                return false;
             world.destroyBlock(pos, false);
-                if (getMagnet(stack)){
-                    magnetOn(list, state, world, stack, pos, player);
-                }else{
-                    if (!list.isEmpty()) {
-                        list.forEach(loot -> {
-                            if (getUpgradeByUpgrade(stack, Upgrade.AUTO_SMELT) != null) {
-                                IInventory inv = new Inventory(1);
-                                inv.setInventorySlotContents(0, loot.copy());
-                                Optional<? extends AbstractCookingRecipe> recipe = world.getRecipeManager().getRecipe(recipeType, inv, world);
-                                loot = recipe.isPresent() ? recipe.get().getRecipeOutput().copy() : loot.copy();
-                            }
-                            for (int num = 0; num < getFortune(stack) + 1; num++) {
-                                if (getUpgradeByUpgrade(stack, Upgrade.TRASH) == null){
-                                    world.addEntity(new ItemEntity(world, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, loot.copy()));
-                                }else{
-                                    IItemHandler trashHandler = Trash.getHandler(getStackByUpgrade(stack, Upgrade.TRASH));
-                                    List<Item> filter = new ArrayList<>();
-                                    for (int index = 0; index < trashHandler.getSlots(); index++) {
-                                        if (trashHandler.getStackInSlot(index).getItem() != Items.AIR) {
-                                            filter.add(trashHandler.getStackInSlot(index).getItem());
-                                        }
-                                    }
-                                    if (!filter.contains(loot.getItem())) {
-                                        world.addEntity(new ItemEntity(world, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, loot.copy()));
-                                        break;
+            if (getMagnet(stack)){
+                magnetOn(list, state, world, stack, pos, player);
+            }else{
+                if (!list.isEmpty()) {
+                    list.forEach(loot -> {
+                        if (getUpgradeByUpgrade(stack, Upgrade.AUTO_SMELT) != null) {
+                            IInventory inv = new Inventory(1);
+                            inv.setInventorySlotContents(0, loot.copy());
+                            Optional<? extends AbstractCookingRecipe> recipe = world.getRecipeManager().getRecipe(recipeType, inv, world);
+                            loot = recipe.isPresent() ? recipe.get().getRecipeOutput().copy() : loot.copy();
+                        }
+                        for (int num = 0; num < getFortune(stack) + 1; num++) {
+                            if (getUpgradeByUpgrade(stack, Upgrade.TRASH) == null){
+                                world.addEntity(new ItemEntity(world, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, loot.copy()));
+                            }else{
+                                IItemHandler trashHandler = Trash.getHandler(getStackByUpgrade(stack, Upgrade.TRASH));
+                                List<Item> filter = new ArrayList<>();
+                                for (int index = 0; index < trashHandler.getSlots(); index++) {
+                                    if (trashHandler.getStackInSlot(index).getItem() != Items.AIR) {
+                                        filter.add(trashHandler.getStackInSlot(index).getItem());
                                     }
                                 }
-                                if (!loot.copy().toString().contains("ingot") || getUpgradeByUpgrade(stack, Upgrade.AUTO_SMELT) == null)
+                                if (!filter.contains(loot.getItem())) {
+                                    world.addEntity(new ItemEntity(world, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, loot.copy()));
                                     break;
+                                }
                             }
-                        });
-                    }
+                            if (!smeltingFilter.contains(loot.copy().getItem()))
+                                break;
+                        }
+                    });
                 }
-            setFuelValue(stack, 1, player);
+            }
             if (getUpgradeByUpgrade(stack, Upgrade.LIGHT) != null)
                 spawnLight(world, ray);
             return true;
@@ -453,6 +469,20 @@ public class BurnerGun extends ToolItem{
     @Override
     public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
+        /*
+            Harvest Level : 0 -> wood/gold
+                            1 -> stone
+                            2 -> iron
+                            3 -> diamond
+                            4 -> stronk
+         */
+
+        if (getfuelValue(stack) >= base_buffer*3/4){
+            stack.getTag().putInt("HarvestLevel", 4);
+        }else if (getfuelValue(stack) < base_buffer*3/4){
+            stack.getTag().putInt("HarvestLevel", 2);
+        }
+
         int fortune = EnchantmentHelper.getEnchantments(stack).get(Enchantments.FORTUNE) != null ? EnchantmentHelper.getEnchantments(stack).get(Enchantments.FORTUNE) : 0;
         int silk = EnchantmentHelper.getEnchantments(stack).get(Enchantments.SILK_TOUCH) != null ? EnchantmentHelper.getEnchantments(stack).get(Enchantments.SILK_TOUCH) : 0;
         stack.getEnchantmentTagList().clear();
