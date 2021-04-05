@@ -388,6 +388,7 @@ public class BurnerGun extends ToolItem{
         );
         if (getfuelValue(stack) >= getUseValue(stack) && !(block instanceof Light)){
             setFuelValue(stack, 1, player);
+            LOGGER.info("Set");
             if (state.getBlockHardness(world, pos) == -1.0 || state.getHarvestLevel() > getHarvestLevel(stack))
                 return false;
             world.destroyBlock(pos, false);
