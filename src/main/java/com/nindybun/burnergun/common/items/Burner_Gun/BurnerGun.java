@@ -507,7 +507,7 @@ public class BurnerGun extends ToolItem{
     @Override
     public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         int fireAspect = EnchantmentHelper.getEnchantments(stack).get(Enchantments.FIRE_ASPECT) != null ? EnchantmentHelper.getEnchantments(stack).get(Enchantments.FIRE_ASPECT) : 0;
-        stack.getTag().putInt("FuelValue", getfuelValue(stack)-base_use*(fireAspect+1));
+        stack.getTag().putInt("FuelValue", getfuelValue(stack)-base_use*(fireAspect*2 == 0 ? 1 : fireAspect*2));
         return super.hitEntity(stack, target, attacker);
     }
 
