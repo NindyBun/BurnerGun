@@ -22,11 +22,11 @@ public class UpgradeBagContainer extends Container {
 
     public UpgradeBagContainer(int windowId, PlayerInventory playerInventory, UpgradeBagHandler handler){
         super(ModContainers.UPGRADE_BAG_CONTAINER.get(), windowId);
+        this.handler = handler;
         this.setup(playerInventory);
-        this.upgradeBagHandler = handler;
-    }
+        }
 
-    private final UpgradeBagHandler upgradeBagHandler;
+    private final UpgradeBagHandler handler;
 
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
@@ -68,7 +68,7 @@ public class UpgradeBagContainer extends Container {
             }
         }
 
-        int bagSlotCount = upgradeBagHandler.getSlots();
+        int bagSlotCount = handler.getSlots();
         if (bagSlotCount < 1 || bagSlotCount > MAX_EXPECTED_HANDLER_SLOT_COUNT) {
             LOGGER.warn("Unexpected invalid slot count in VoidHandler(" + bagSlotCount + ")");
             bagSlotCount = MathHelper.clamp(bagSlotCount, 1, MAX_EXPECTED_HANDLER_SLOT_COUNT);
@@ -81,7 +81,7 @@ public class UpgradeBagContainer extends Container {
             int bagCol = bagSlot % HANDLER_SLOTS_PER_ROW;
             int xpos = HANDLER_INVENTORY_XPOS + SLOT_X_SPACING * bagCol;
             int ypos = HANDLER_INVENTORY_YPOS + SLOT_Y_SPACING * bagRow;
-            addSlot(new SlotItemHandler(upgradeBagHandler, slotNumber, xpos, ypos));
+            addSlot(new SlotItemHandler(handler, slotNumber, xpos, ypos));
         }
     }
 

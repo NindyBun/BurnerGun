@@ -3,6 +3,9 @@ package com.nindybun.burnergun.common.items.upgrades.Auto_Fuel;
 import com.nindybun.burnergun.common.containers.AutoFuelContainer;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
 import com.nindybun.burnergun.common.items.upgrades.UpgradeCard;
+import com.nindybun.burnergun.common.network.PacketHandler;
+import com.nindybun.burnergun.common.network.packets.PacketOpenAutoFuelGui;
+import com.nindybun.burnergun.common.network.packets.PacketOpenTrashGui;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.ItemStack;
@@ -33,10 +36,7 @@ public class AutoFuel extends UpgradeCard {
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
         if (!world.isRemote) {
-            player.openContainer(new SimpleNamedContainerProvider(
-                    (windowId, playerInv, playerEntity) -> new AutoFuelContainer(windowId, playerInv, getHandler(stack)),
-                    new StringTextComponent("")
-            ));
+            PacketHandler.sendToServer(new PacketOpenAutoFuelGui());
         }
         return ActionResult.resultSuccess(stack);
     }

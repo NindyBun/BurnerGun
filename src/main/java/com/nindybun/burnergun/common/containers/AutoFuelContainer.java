@@ -22,11 +22,11 @@ public class AutoFuelContainer extends Container {
 
     public AutoFuelContainer(int windowId, PlayerInventory playerInventory, AutoFuelHandler handler){
         super(ModContainers.AUTOFUEL_CONTAINER.get(), windowId);
+        this.handler = handler;
         this.setup(playerInventory);
-        this.autoFuelHandler = handler;
     }
 
-    private final AutoFuelHandler autoFuelHandler;
+    private final AutoFuelHandler handler;
 
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
@@ -68,7 +68,7 @@ public class AutoFuelContainer extends Container {
             }
         }
 
-        int bagSlotCount = autoFuelHandler.getSlots();
+        int bagSlotCount = handler.getSlots();
         if (bagSlotCount < 1 || bagSlotCount > MAX_EXPECTED_HANDLER_SLOT_COUNT) {
             LOGGER.warn("Unexpected invalid slot count in AutoFuelInsertHandler(" + bagSlotCount + ")");
             bagSlotCount = MathHelper.clamp(bagSlotCount, 1, MAX_EXPECTED_HANDLER_SLOT_COUNT);
@@ -81,7 +81,7 @@ public class AutoFuelContainer extends Container {
             int bagCol = bagSlot % HANDLER_SLOTS_PER_ROW;
             int xpos = HANDLER_INVENTORY_XPOS + SLOT_X_SPACING * bagCol;
             int ypos = HANDLER_INVENTORY_YPOS + SLOT_Y_SPACING * bagRow;
-            addSlot(new SlotItemHandler(autoFuelHandler, slotNumber, xpos, ypos));
+            addSlot(new SlotItemHandler(handler, slotNumber, xpos, ypos));
         }
     }
 

@@ -1,7 +1,10 @@
 package com.nindybun.burnergun.common.network;
 
 import com.nindybun.burnergun.common.BurnerGun;
+import com.nindybun.burnergun.common.network.packets.PacketOpenAutoFuelGui;
 import com.nindybun.burnergun.common.network.packets.PacketOpenBurnerGunGui;
+import com.nindybun.burnergun.common.network.packets.PacketOpenTrashGui;
+import com.nindybun.burnergun.common.network.packets.PacketOpenUpgradeBagGui;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.FakePlayer;
@@ -22,6 +25,10 @@ public class PacketHandler {
     public static void register(){
         int id = 0;
         INSTANCE.registerMessage(id++, PacketOpenBurnerGunGui.class, PacketOpenBurnerGunGui::encode, PacketOpenBurnerGunGui::decode, PacketOpenBurnerGunGui.Handler::handle);
+        INSTANCE.registerMessage(id++, PacketOpenAutoFuelGui.class, PacketOpenAutoFuelGui::encode, PacketOpenAutoFuelGui::decode, PacketOpenAutoFuelGui.Handler::handle);
+        INSTANCE.registerMessage(id++, PacketOpenTrashGui.class, PacketOpenTrashGui::encode, PacketOpenTrashGui::decode, PacketOpenTrashGui.Handler::handle);
+        INSTANCE.registerMessage(id++, PacketOpenUpgradeBagGui.class, PacketOpenUpgradeBagGui::encode, PacketOpenUpgradeBagGui::decode, PacketOpenUpgradeBagGui.Handler::handle);
+
     }
 
     public static void sendTo(Object msg, ServerPlayerEntity player) {

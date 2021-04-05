@@ -3,6 +3,8 @@ package com.nindybun.burnergun.common.items.upgrades.Upgrade_Bag;
 import com.nindybun.burnergun.common.containers.UpgradeBagContainer;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
 import com.nindybun.burnergun.common.items.upgrades.UpgradeCard;
+import com.nindybun.burnergun.common.network.PacketHandler;
+import com.nindybun.burnergun.common.network.packets.PacketOpenUpgradeBagGui;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.ItemStack;
@@ -33,10 +35,7 @@ public class UpgradeBag extends UpgradeCard {
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
         if (!world.isRemote) {
-            player.openContainer(new SimpleNamedContainerProvider(
-                    (windowId, playerInv, playerEntity) -> new UpgradeBagContainer(windowId, playerInv, getHandler(stack)),
-                    new StringTextComponent("")
-            ));
+            PacketHandler.sendToServer(new PacketOpenUpgradeBagGui());
         }
         return ActionResult.resultSuccess(stack);
     }

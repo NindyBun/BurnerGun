@@ -507,7 +507,7 @@ public class BurnerGun extends ToolItem{
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
         ItemStack stack = player.getHeldItem(handIn).getStack();
-        if (!world.isRemote && (player.isSneaking() || !player.isSneaking())){
+        if (!world.isRemote && (player.isSneaking() || !player.isSneaking()) && !player.abilities.isCreativeMode){
             BlockRayTraceResult ray = WorldUtil.getLookingAt(player, RayTraceContext.FluidMode.NONE, getRange(stack));
             BlockPos pos = ray.getPos();
             BlockState state = world.getBlockState(pos);
@@ -517,7 +517,7 @@ public class BurnerGun extends ToolItem{
                 setNBT(stack);
                 stack.addEnchantment(Enchantments.FORTUNE, getFortune(stack));
                 stack.addEnchantment(Enchantments.SILK_TOUCH, getSilkTouch(stack));
-                if (getfuelValue(stack) >= getUseValue(stack) && !player.abilities.isCreativeMode){
+                if (getfuelValue(stack) >= getUseValue(stack)){
                     player.playSound(SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.MASTER, 1.0f, 1.0f);
                     breakBlock(stack, state, block, pos, player, world, ray);
                     areaMine(state, world, stack,  pos, player, ray);
