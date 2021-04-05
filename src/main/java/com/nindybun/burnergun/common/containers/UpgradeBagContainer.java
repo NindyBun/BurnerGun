@@ -13,6 +13,8 @@ import net.minecraftforge.items.SlotItemHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nonnull;
+
 public class UpgradeBagContainer extends Container {
 
     UpgradeBagContainer(int windowId, PlayerInventory playerInv,
@@ -94,10 +96,40 @@ public class UpgradeBagContainer extends Container {
     }
 
 
+    @Nonnull
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
-        super.transferStackInSlot(playerIn, index);
-        return ItemStack.EMPTY;
+    public ItemStack transferStackInSlot(PlayerEntity player, int sourceSlotIndex) {
+        Slot sourceSlot = inventorySlots.get(sourceSlotIndex);
+        if (sourceSlot == null || !sourceSlot.getHasStack()) return ItemStack.EMPTY;  //EMPTY_ITEM
+        ItemStack sourceStack = sourceSlot.getStack();
+        ItemStack copyOfSourceStack = sourceStack.copy();
+        final int BAG_SLOT_COUNT = handler.getSlots();
+
+        // Check if the slot clicked is one of the vanilla container slots
+        if (sourceSlotIndex >= VANILLA_FIRST_SLOT_INDEX && sourceSlotIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
+            // This is a vanilla container slot so merge the stack into the bag inventory
+            if (!mergeItemStack(sourceStack, HANDLER_FIRST_SLOT_INDEX, HANDLER_FIRST_SLOT_INDEX + BAG_SLOT_COUNT, false)){
+                return ItemStack.EMPTY;  // EMPTY_ITEM
+            }
+        } else if (sourceSlotIndex >= HANDLER_FIRST_SLOT_INDEX && sourceSlotIndex < HANDLER_FIRST_SLOT_INDEX + BAG_SLOT_COUNT) {
+            // This is a bag slot so merge the stack into the players inventory
+            if (!mergeItemStack(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
+                return ItemStack.EMPTY;
+            }
+        } else {
+            LOGGER.warn("Invalid slotIndex:" + sourceSlotIndex);
+            return ItemStack.EMPTY;
+        }
+
+        // If stack size == 0 (the entire stack was moved) set slot contents to null
+        if (sourceStack.getCount() == 0) {
+            sourceSlot.putStack(ItemStack.EMPTY);
+        } else {
+            sourceSlot.onSlotChanged();
+        }
+
+        sourceSlot.onTake(player, sourceStack);
+        return copyOfSourceStack;
     }
 
     private static final Logger LOGGER = LogManager.getLogger();
