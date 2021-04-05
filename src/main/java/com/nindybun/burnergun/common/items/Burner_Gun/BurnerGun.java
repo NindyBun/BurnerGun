@@ -388,7 +388,7 @@ public class BurnerGun extends ToolItem{
         );
         if (getfuelValue(stack) >= getUseValue(stack) && !(block instanceof Light)){
             setFuelValue(stack, 1, player);
-            LOGGER.info("Set");
+            LOGGER.info("BreakBlock");
             if (state.getBlockHardness(world, pos) == -1.0 || state.getHarvestLevel() > getHarvestLevel(stack))
                 return false;
             world.destroyBlock(pos, false);
@@ -458,6 +458,7 @@ public class BurnerGun extends ToolItem{
                         Block theBlock = theState.getBlock();
                         setFuelValue(stack, 0, player);
                         if (world.getBlockState(thePos).getMaterial() != Material.AIR){
+                            LOGGER.info("Area Block");
                             breakBlock(stack, theState, theBlock, thePos, player, world, ray);
                         }
                     }
