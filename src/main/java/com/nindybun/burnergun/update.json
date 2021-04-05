@@ -1,0 +1,10 @@
+{
+  "homepage": "https://github.com/NindyBun/BurnerGun",
+  "1.16.4": {
+    "v1.0.0": "Initial release. May contian bugs I may be unaware of."
+  },
+  "promos": {
+    "1.16.4-latest": "1.0.0",
+    "1.16.4-recommended": "1.0.0"
+  }
+}
