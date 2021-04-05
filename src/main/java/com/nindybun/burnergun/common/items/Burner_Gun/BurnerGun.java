@@ -206,15 +206,8 @@ public class BurnerGun extends ToolItem{
 
     }
     public void setFuelValue(ItemStack stack, int use, PlayerEntity player){
-        if (getfuelValue(stack) < base_buffer-getUseValue(stack)){
-            refuel(stack, player);
-            stack.getTag().putInt("FuelValue", getfuelValue(stack)-(int)getUseValue(stack)*use);
-        }else{
-            stack.getTag().putInt("FuelValue", getfuelValue(stack)-(int)getUseValue(stack)*use);
-            if (getfuelValue(stack) < base_buffer-getUseValue(stack)){
-                refuel(stack, player);
-            }
-        }
+        refuel(stack, player);
+        stack.getTag().putInt("FuelValue", getfuelValue(stack)-(int)getUseValue(stack)*use);
     }
     public int getfuelValue(ItemStack stack) {
         return stack.getTag().getInt("FuelValue");
@@ -380,7 +373,6 @@ public class BurnerGun extends ToolItem{
     }
 
     public Boolean breakBlock(ItemStack stack, BlockState state, Block block, BlockPos pos, PlayerEntity player, World world, BlockRayTraceResult ray){
-
         List<ItemStack> list = state.getDrops(new LootContext.Builder((ServerWorld) world)
                 .withParameter(LootParameters.TOOL, stack)
                 .withParameter(LootParameters.field_237457_g_, new Vector3d(pos.getX(), pos.getY(), pos.getZ()))
@@ -388,7 +380,6 @@ public class BurnerGun extends ToolItem{
         );
         if (getfuelValue(stack) >= getUseValue(stack) && !(block instanceof Light)){
             setFuelValue(stack, 1, player);
-            LOGGER.info("BreakBlock");
             if (state.getBlockHardness(world, pos) == -1.0 || state.getHarvestLevel() > getHarvestLevel(stack))
                 return false;
             world.destroyBlock(pos, false);
@@ -452,17 +443,15 @@ public class BurnerGun extends ToolItem{
         for (int xPos = pos.getX() - (int)size.getX(); xPos <= pos.getX() + (int)size.getX(); ++xPos){
             for (int yPos = pos.getY() - (int)size.getY(); yPos <= pos.getY() + (int)size.getY(); ++yPos){
                 for (int zPos = pos.getZ() - (int)size.getZ(); zPos <= pos.getZ() + (int)size.getZ(); ++zPos){
-                    if (pos != new BlockPos(xPos, yPos, zPos)){
+                    if (!pos.equals(new BlockPos(xPos, yPos, zPos))){
                         BlockPos thePos = new BlockPos(xPos, yPos, zPos);
                         BlockState theState = world.getBlockState(thePos);
                         Block theBlock = theState.getBlock();
                         setFuelValue(stack, 0, player);
                         if (world.getBlockState(thePos).getMaterial() != Material.AIR){
-                            LOGGER.info("Area Block");
                             breakBlock(stack, theState, theBlock, thePos, player, world, ray);
                         }
                     }
-
                 }
             }
         }
