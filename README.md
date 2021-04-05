@@ -4,6 +4,15 @@
 
 # Burner Gun
 
+## Status: Unfinished
+### Todo:
+- Make crafting recipes for everything
+
+## Future Plans
+- Remodel Burner Gun
+- Cleanup code
+- Change upgrade system
+
 ## Features
 - Mining related upgrades
 - Variable 9x9 mining area
