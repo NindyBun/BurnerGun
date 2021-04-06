@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "ioi",
+    "grg",
+    "ioi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "g": {
+      "item": "minecraft:ender_pearl"
+    },
+    "r": {
+      "item": "burnergun:base_tier_1"
+    },
+    "o": {
+      "item": "minecraft:iron_pickaxe"
+    }
+  },
+  "result":
+  {
+    "item": "burnergun:vertical_expansion_1_upgrade",
+    "count": 1
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "ihi",
+    "oro",
+    "igi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "g": {
+      "item": "minecraft:ender_pearl"
+    },
+    "r": {
+      "item": "burnergun:base_tier_4"
+    },
+    "o": {
+      "item": "minecraft:fire_charge"
+    },
+    "h": {
+      "item": "burnergun:focal_point_2_upgrade"
+    }
+  },
+  "result":
+  {
+    "item": "burnergun:focal_point_3_upgrade",
+    "count": 1
+  }
+}

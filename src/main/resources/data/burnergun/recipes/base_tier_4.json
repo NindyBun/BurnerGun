@@ -8,21 +8,21 @@
   ],
   "key": {
     "i": {
-      "tag": "forge:ingots/gold"
+      "tag": "forge:gems/diamond"
     },
     "g": {
       "item": "minecraft:gold_block"
     },
     "b": {
-      "item": "burnergun:base_tier_2"
+      "item": "burnergun:base_tier_3"
     },
     "c": {
-      "tag": "forge:dyes/yellow"
+      "tag": "forge:dyes/red"
     }
   },
   "result":
   {
-    "item": "burnergun:base_tier_3",
+    "item": "burnergun:base_tier_4",
     "count": 1
   }
 }

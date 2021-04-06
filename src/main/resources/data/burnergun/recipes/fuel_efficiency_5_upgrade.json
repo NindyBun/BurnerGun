@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "iti",
+    "grg",
+    "ioi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/gold"
+    },
+    "g": {
+      "item": "minecraft:blaze_rod"
+    },
+    "r": {
+      "item": "burnergun:base_tier_4"
+    },
+    "o": {
+      "tag": "forge:gems/emerald"
+    },
+    "t": {
+      "item": "burnergun:fuel_efficiency_4_upgrade"
+    }
+  },
+  "result":
+  {
+    "item": "burnergun:fuel_efficiency_5_upgrade",
+    "count": 1
+  }
+}

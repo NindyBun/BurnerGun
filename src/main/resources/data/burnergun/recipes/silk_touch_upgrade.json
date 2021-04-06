@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "igi",
+    "ufu",
+    "igi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "u": {
+      "item": "minecraft:web"
+    },
+    "f": {
+      "item": "burnergun:base_tier_4"
+    },
+    "g": {
+      "item": "minecraft:slime_ball"
+    }
+  },
+  "result":
+  {
+    "item": "burnergun:silk_touch_upgrade",
+    "count": 1
+  }
+}

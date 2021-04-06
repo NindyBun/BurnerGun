@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "isi",
+    "ufu",
+    "igi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "u": {
+      "item": "minecraft:coal"
+    },
+    "s": {
+      "item": "minecraft:coal_block"
+    },
+    "f": {
+      "item": "burnergun:base_tier_1"
+    },
+    "g": {
+      "item": "minecraft:hopper"
+    }
+  },
+  "result":
+  {
+    "item": "burnergun:auto_fuel_upgrade",
+    "count": 1
+  }
+}

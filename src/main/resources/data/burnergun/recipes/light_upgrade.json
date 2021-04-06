@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "isi",
+    "ufu",
+    "isi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "u": {
+      "item": "minecraft:glowstone"
+    },
+    "s": {
+      "item": "minecraft:lantern"
+    },
+    "f": {
+      "item": "burnergun:base_tier_2"
+    }
+  },
+  "result":
+  {
+    "item": "burnergun:light_upgrade",
+    "count": 1
+  }
+}

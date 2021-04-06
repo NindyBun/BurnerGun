@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "iui",
+    "ufu",
+    "isi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "u": {
+      "item": "minecraft:lava_bucket"
+    },
+    "s": {
+      "item": "minecraft:ender_pearl"
+    },
+    "f": {
+      "item": "burnergun:base_tier_3"
+    }
+  },
+  "result":
+  {
+    "item": "burnergun:trash_upgrade",
+    "count": 1
+  }
+}

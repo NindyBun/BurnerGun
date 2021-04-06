@@ -2,27 +2,27 @@
   "type": "minecraft:crafting_shaped",
   "pattern":
   [
-    "ici",
-    "gbg",
+    "igi",
+    "oro",
     "igi"
   ],
   "key": {
     "i": {
-      "tag": "forge:ingots/gold"
+      "tag": "forge:ingots/iron"
     },
     "g": {
-      "item": "minecraft:gold_block"
+      "item": "minecraft:lapis_block"
     },
-    "b": {
+    "r": {
       "item": "burnergun:base_tier_2"
     },
-    "c": {
-      "tag": "forge:dyes/yellow"
+    "o": {
+      "tag": "forge:gems/diamond"
     }
   },
   "result":
   {
-    "item": "burnergun:base_tier_3",
+    "item": "burnergun:fortune_1_upgrade",
     "count": 1
   }
 }
