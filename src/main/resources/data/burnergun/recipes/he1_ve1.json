@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "pattern":
+  [
+    "   ",
+    "   ",
+    "   "
+  ],
+  "ingredients": [
+    {
+      "item": "burnergun:horizontal_expansion_1_upgrade"
+    }
+  ],
+  "result":
+  {
+    "item": "burnergun:vertical_expansion_1_upgrade",
+    "count": 1
+  }
+}
