@@ -3,26 +3,23 @@
   "pattern":
   [
     "igi",
-    "ufu",
+    "gfg",
     "igi"
   ],
   "key": {
     "i": {
       "tag": "forge:ingots/iron"
     },
-    "u": {
-      "item": "minecraft:cobweb"
-    },
     "f": {
-      "item": "burnergun:base_tier_4"
+      "item": "burnergun:base_tier_5"
     },
     "g": {
-      "item": "minecraft:slime_ball"
+      "item": "minecraft:chest"
     }
   },
   "result":
   {
-    "item": "burnergun:silk_touch_upgrade",
+    "item": "burnergun:upgrade_bag",
     "count": 1
   }
 }

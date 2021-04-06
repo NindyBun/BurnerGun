@@ -11,7 +11,7 @@
       "tag": "forge:ingots/gold"
     },
     "g": {
-      "item": "minecraft:magma_block"
+      "item": "minecraft:coal_block"
     },
     "r": {
       "item": "burnergun:base_tier_1"

@@ -11,10 +11,10 @@
       "tag": "forge:ingots/iron"
     },
     "u": {
-      "tag": "forge:dusts/redstone"
+      "item": "minecraft:redstone_block"
     },
     "h": {
-      "item": "minecraft:lapis"
+      "item": "minecraft:lapis_block"
     },
     "f": {
       "item": "burnergun:base_tier_2"
