@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "idg",
+    "rfg",
+    "isg"
+  ],
+  "key": {
+    "g": {
+      "tag": "forge:ingots/gold"
+    },
+    "i": {
+      "item": "minecraft:iron_block"
+    },
+    "s": {
+      "item": "minecraft:stone_button"
+    },
+    "d": {
+      "tag": "forge:gems/diamond"
+    },
+    "f": {
+      "item": "minecraft:furnace"
+    },
+    "r": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "result":
+  {
+    "item": "burnergun:burner_gun",
+    "count": 1
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "ici",
+    "gbg",
+    "igi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "g": {
+      "tag": "forge:ingots/gold"
+    },
+    "b": {
+      "item": "burnergun:base_tier_1"
+    },
+    "c": {
+      "tag": "forge:dyes/cyan"
+    }
+  },
+  "result":
+  {
+    "item": "burnergun:base_tier_2",
+    "count": 1
+  }
+}

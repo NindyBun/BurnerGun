@@ -47,11 +47,7 @@
   "tooltip.burnergun.fortune": "Adds fortune.",
   "tooltip.burnergun.silk_touch": "Adds silk touch.",
 
-  "tooltip.burnergun.base_tier_1": "Used for basic tiered upgrades.",
-  "tooltip.burnergun.base_tier_2": "Used for tiered 2 upgrades.",
-  "tooltip.burnergun.base_tier_3": "Used for tiered 3 upgrades.",
-  "tooltip.burnergun.base_tier_4": "Used for tiered 4 upgrades.",
-  "tooltip.burnergun.base_tier_5": "Used for tiered 5 upgrades.",
+  "tooltip.burnergun.base_tier=": "Used for upgrades.",
 
   "item.burnergun.burner_gun":  "Burner Gun",
 

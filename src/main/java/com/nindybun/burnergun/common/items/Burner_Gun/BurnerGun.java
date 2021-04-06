@@ -75,7 +75,7 @@ public class BurnerGun extends ToolItem{
     }
 
     private enum ModTier implements IItemTier {
-        TIER(4, 0, 0, 6, 0, null);
+        TIER(4, 0, 0, 4, 0, null);
 
         private final int harvestlevel;
         private final int maxUses;
