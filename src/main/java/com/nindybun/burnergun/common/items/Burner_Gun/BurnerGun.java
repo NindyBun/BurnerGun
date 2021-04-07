@@ -520,7 +520,7 @@ public class BurnerGun extends ToolItem{
                 stack.addEnchantment(Enchantments.FORTUNE, getFortune(stack));
                 stack.addEnchantment(Enchantments.SILK_TOUCH, getSilkTouch(stack));
                 if (getfuelValue(stack) >= getUseValue(stack)){
-                    player.playSound(SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.MASTER, 1.0f, 1.0f);
+                    player.playSound(SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.VOICE, 0.8f, 1.0f);
                     breakBlock(stack, state, block, pos, player, world, ray);
                     areaMine(state, world, stack,  pos, player, ray);
                 }
