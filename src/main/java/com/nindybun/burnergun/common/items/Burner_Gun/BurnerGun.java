@@ -59,7 +59,7 @@ import java.util.function.Supplier;
 public class BurnerGun extends ToolItem{
     private static final Set<Block> EFFECTIVE = Sets.newHashSet();
     private static final int base_use = 100;
-    private static final int base_buffer = 100_000;
+    public static final int base_buffer = 100_000;
     IRecipeType<? extends AbstractCookingRecipe> recipeType = IRecipeType.SMELTING;
     private static final List<Item> smeltingFilter = new ArrayList<Item>(){
         {
@@ -131,7 +131,7 @@ public class BurnerGun extends ToolItem{
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.hasTag() && stack.getTag().contains("FuelValue"))
         {
-            tooltip.add(new StringTextComponent("Fuel Value: " + getfuelValue(stack) + " / " + base_buffer).mergeStyle(TextFormatting.YELLOW));
+            tooltip.add(new StringTextComponent("Fuel Level: " + getfuelValue(stack) + " / " + base_buffer).mergeStyle(TextFormatting.YELLOW));
             tooltip.add(new StringTextComponent("Press " + Keybinds.burnergun_gui_key.getKey().toString().toUpperCase() + " to open GUI").mergeStyle(TextFormatting.GRAY));
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
