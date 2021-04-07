@@ -20,6 +20,7 @@ import java.awt.*;
 @Mod.EventBusSubscriber(modid = BurnerGun.MOD_ID, value = Dist.CLIENT)
 public class FuelValueRenderer {
     private static final Logger LOGGER = LogManager.getLogger();
+    private static final int base_buffer = com.nindybun.burnergun.common.items.Burner_Gun.BurnerGun.base_buffer;
     @SubscribeEvent
     public static void renderOverlay(@Nonnull RenderGameOverlayEvent.Post event){
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL){
@@ -39,6 +40,16 @@ public class FuelValueRenderer {
 
     public static void renderFuel(RenderGameOverlayEvent event, ItemStack stack){
         FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-        fontRenderer.drawString(event.getMatrixStack(), "Fuel level: " + stack.getTag().getInt("FuelValue"), 6, event.getWindow().getScaledHeight()-12, Color.ORANGE.getRGB());
+        int level = stack.getTag().getInt("FuelValue");
+        Color color;
+        if (level > base_buffer*3/4)
+            color = Color.GREEN;
+        else if (level > base_buffer*1/4 && level <= base_buffer*3/4)
+            color = Color.ORANGE;
+        else
+            color = Color.RED;
+        //fontRenderer.drawString(event.getMatrixStack(), "Fuel level: "+level, 6, event.getWindow().getScaledHeight()-12, Color.WHITE.getRGB());
+        fontRenderer.drawString(event.getMatrixStack(), "Fuel level: ", 6, event.getWindow().getScaledHeight()-12, Color.WHITE.getRGB());
+        fontRenderer.drawString(event.getMatrixStack(), level+"", 61, event.getWindow().getScaledHeight()-12, color.getRGB());
     }
 }
