@@ -4,10 +4,7 @@
 
 # Burner Gun
 
-## Status: Unfinished
-### Todo:
-- Make crafting recipes for everything
-
+## Status: Done
 ## Future Plans
 - Remodel Burner Gun
 - Cleanup code
