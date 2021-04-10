@@ -13,6 +13,7 @@ import com.nindybun.burnergun.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -132,8 +133,12 @@ public class BurnerGun extends ToolItem{
         if (stack.hasTag() && stack.getTag().contains("FuelValue"))
         {
             tooltip.add(new StringTextComponent("Fuel Level: " + getfuelValue(stack) + " / " + base_buffer).mergeStyle(TextFormatting.YELLOW));
-            tooltip.add(new StringTextComponent("Press " + Keybinds.burnergun_gui_key.getKey().toString().toUpperCase() + " to open GUI").mergeStyle(TextFormatting.GRAY));
         }
+        tooltip.add(new StringTextComponent("Press " + Keybinds.burnergun_gui_key.getKey().toString().toUpperCase() + " to open GUI").mergeStyle(TextFormatting.GRAY));
+
+
+
+
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
