@@ -13,7 +13,6 @@ import com.nindybun.burnergun.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -41,8 +40,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.ForgeTagHandler;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -59,8 +56,10 @@ import java.util.function.Supplier;
 
 public class BurnerGun extends ToolItem{
     private static final Set<Block> EFFECTIVE = Sets.newHashSet();
+    private static final int base_use_timer = (int)(20*2);
+    private static final int base_coolDown = 20*5;
     private static final int base_use = 100;
-    public static final int base_buffer = 100_000;
+    public static final int base_use_buffer = 100_000;
     IRecipeType<? extends AbstractCookingRecipe> recipeType = IRecipeType.SMELTING;
     private static final List<Item> smeltingFilter = new ArrayList<Item>(){
         {
@@ -132,12 +131,9 @@ public class BurnerGun extends ToolItem{
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.hasTag() && stack.getTag().contains("FuelValue"))
         {
-            tooltip.add(new StringTextComponent("Fuel Level: " + getfuelValue(stack) + " / " + base_buffer).mergeStyle(TextFormatting.YELLOW));
+            tooltip.add(new StringTextComponent("Fuel Level: " + getfuelValue(stack) + " / " + base_use_buffer).mergeStyle(TextFormatting.YELLOW));
         }
         tooltip.add(new StringTextComponent("Press " + Keybinds.burnergun_gui_key.getKey().toString().toUpperCase() + " to open GUI").mergeStyle(TextFormatting.GRAY));
-
-
-
 
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
@@ -169,6 +165,12 @@ public class BurnerGun extends ToolItem{
         if (!nbt.contains("HarvestLevel")){
             nbt.putInt("HarvestLevel", 2);
         }
+        if (!nbt.contains("CoolDown")){
+            nbt.putInt("CoolDown", 0);
+        }
+        if (!nbt.contains("Timer")){
+            nbt.putInt("Timer", 0);
+        }
         stack.setTag(nbt);
     }
 ////////////////////////////////////////////////////////////////////////
@@ -186,7 +188,7 @@ public class BurnerGun extends ToolItem{
                     int fuelValue = net.minecraftforge.common.ForgeHooks.getBurnTime(invStack);
 
                     while (player.inventory.hasItemStack(invStack) &&
-                            !(getfuelValue(stack) + fuelValue > base_buffer)){
+                            !(getfuelValue(stack) + fuelValue > base_use_buffer)){
 
                         stack.getTag().putInt("FuelValue", getfuelValue(stack) + fuelValue);
                         ItemStack containerItem = invStack.getContainerItem();
@@ -201,7 +203,7 @@ public class BurnerGun extends ToolItem{
         }
 
         while (item.getStackInSlot(0).getCount() > 0){
-            if (getfuelValue(stack) + net.minecraftforge.common.ForgeHooks.getBurnTime(item.getStackInSlot(0)) > base_buffer)
+            if (getfuelValue(stack) + net.minecraftforge.common.ForgeHooks.getBurnTime(item.getStackInSlot(0)) > base_use_buffer)
                 break;
 
             stack.getTag().putInt("FuelValue", getfuelValue(stack) + net.minecraftforge.common.ForgeHooks.getBurnTime(item.getStackInSlot(0)));
@@ -252,7 +254,9 @@ public class BurnerGun extends ToolItem{
     public int getHarvestLevel(ItemStack stack){
         return stack.getTag().getInt("HarvestLevel");
     }
-////////////////////////////////////////////////////////////////////////
+    public int getCoolDown(ItemStack stack) { return stack.getTag().getInt("CoolDown"); }
+    public int getTimer(ItemStack stack) { return stack.getTag().getInt("Timer"); }
+    ////////////////////////////////////////////////////////////////////////
     //Returns Upgrade cards
     public List<UpgradeCard> getUpgrades(ItemStack stack){
         List<UpgradeCard> upgrades = new ArrayList<>();
@@ -475,9 +479,16 @@ public class BurnerGun extends ToolItem{
                             4 -> stronk
          */
 
-        if (getfuelValue(stack) >= base_buffer*3/4){
+        if (getTimer(stack) > 0){
+            stack.getTag().putInt("Timer", getTimer(stack)-1);
+        }
+        if (getCoolDown(stack) > 0 && getTimer(stack) == 0){
+            stack.getTag().putInt("CoolDown", (getCoolDown(stack) - base_coolDown) < 0 ? 0 : (getCoolDown(stack) - base_coolDown));
+        }
+
+        if (getfuelValue(stack) >= base_use_buffer *3/4){
             stack.getTag().putInt("HarvestLevel", 4);
-        }else if (getfuelValue(stack) < base_buffer*3/4){
+        }else if (getfuelValue(stack) < base_use_buffer *3/4){
             stack.getTag().putInt("HarvestLevel", 2);
         }
 
@@ -486,13 +497,13 @@ public class BurnerGun extends ToolItem{
         stack.getEnchantmentTagList().clear();
 
         if (EnchantmentHelper.getEnchantments(stack).get(Enchantments.FIRE_ASPECT) == null){
-            if (getfuelValue(stack) >= base_buffer/2 && getfuelValue(stack) < base_buffer*3/4){
+            if (getfuelValue(stack) >= base_use_buffer /2 && getfuelValue(stack) < base_use_buffer *3/4){
                 stack.addEnchantment(Enchantments.FIRE_ASPECT, 1);
-            }else if (getfuelValue(stack) >= base_buffer*3/4){
+            }else if (getfuelValue(stack) >= base_use_buffer *3/4){
                 stack.addEnchantment(Enchantments.FIRE_ASPECT, 2);
             }
         }else if (EnchantmentHelper.getEnchantments(stack).get(Enchantments.FIRE_ASPECT) == 2){
-            if (getfuelValue(stack) >= base_buffer/2 && getfuelValue(stack) < base_buffer*3/4)
+            if (getfuelValue(stack) >= base_use_buffer /2 && getfuelValue(stack) < base_use_buffer *3/4)
                 stack.addEnchantment(Enchantments.FIRE_ASPECT, 1);
         }
 
@@ -514,7 +525,7 @@ public class BurnerGun extends ToolItem{
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
         ItemStack stack = player.getHeldItem(handIn).getStack();
-        if (!world.isRemote && (player.isSneaking() || !player.isSneaking()) && !player.abilities.isCreativeMode){
+        if (!world.isRemote && stack.getTag().getInt("CoolDown") == 0 && (player.isSneaking() || !player.isSneaking()) && !player.abilities.isCreativeMode){
             BlockRayTraceResult ray = WorldUtil.getLookingAt(player, RayTraceContext.FluidMode.NONE, getRange(stack));
             BlockPos pos = ray.getPos();
             BlockState state = world.getBlockState(pos);
@@ -522,6 +533,7 @@ public class BurnerGun extends ToolItem{
             setFuelValue(stack, 0, player);
             if (state.getMaterial() != Material.AIR){
                 setNBT(stack);
+                stack.getTag().putInt("CoolDown", 200);
                 stack.addEnchantment(Enchantments.FORTUNE, getFortune(stack));
                 stack.addEnchantment(Enchantments.SILK_TOUCH, getSilkTouch(stack));
                 if (getfuelValue(stack) >= getUseValue(stack)){
@@ -537,12 +549,12 @@ public class BurnerGun extends ToolItem{
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        return (getfuelValue(stack)/(float)base_buffer) > 0.0;
+        return stack.getTag().getInt("CoolDown") > 0;
     }
 
     @Override
     public double getDurabilityForDisplay(ItemStack stack) {
-        return 1-(getfuelValue(stack)/(float)base_buffer);
+        return 1-(stack.getTag().getInt("CoolDown")/(float)200);
     }
 
     @Nonnull

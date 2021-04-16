@@ -1,10 +1,8 @@
 package com.nindybun.burnergun.client.renderer;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.nindybun.burnergun.common.BurnerGun;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -20,7 +18,7 @@ import java.awt.*;
 @Mod.EventBusSubscriber(modid = BurnerGun.MOD_ID, value = Dist.CLIENT)
 public class FuelValueRenderer {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final int base_buffer = com.nindybun.burnergun.common.items.Burner_Gun.BurnerGun.base_buffer;
+    private static final int base_buffer = com.nindybun.burnergun.common.items.Burner_Gun.BurnerGun.base_use_buffer;
     @SubscribeEvent
     public static void renderOverlay(@Nonnull RenderGameOverlayEvent.Post event){
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL){
