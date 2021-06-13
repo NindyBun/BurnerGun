@@ -483,7 +483,7 @@ public class BurnerGun extends ToolItem{
             stack.getTag().putInt("Timer", getTimer(stack)-1);
         }
         if (getCoolDown(stack) > 0 && getTimer(stack) == 0){
-            stack.getTag().putInt("CoolDown", (getCoolDown(stack) - base_coolDown) < 0 ? 0 : (getCoolDown(stack) - base_coolDown));
+            stack.getTag().putInt("CoolDown", (getCoolDown(stack) - 1) < 0 ? 0 : (getCoolDown(stack) - 1));
         }
 
         if (getfuelValue(stack) >= base_use_buffer *3/4){
@@ -533,7 +533,7 @@ public class BurnerGun extends ToolItem{
             setFuelValue(stack, 0, player);
             if (state.getMaterial() != Material.AIR){
                 setNBT(stack);
-                stack.getTag().putInt("CoolDown", 200);
+                stack.getTag().putInt("CoolDown", 40); //delay between each use
                 stack.addEnchantment(Enchantments.FORTUNE, getFortune(stack));
                 stack.addEnchantment(Enchantments.SILK_TOUCH, getSilkTouch(stack));
                 if (getfuelValue(stack) >= getUseValue(stack)){
@@ -549,12 +549,14 @@ public class BurnerGun extends ToolItem{
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        return stack.getTag().getInt("CoolDown") > 0;
+        //return stack.getTag().getInt("CoolDown") > 0;
+        return false;
     }
 
     @Override
     public double getDurabilityForDisplay(ItemStack stack) {
-        return 1-(stack.getTag().getInt("CoolDown")/(float)200);
+        //return 1-(stack.getTag().getInt("CoolDown")/(float)base_coolDown);
+        return 1;
     }
 
     @Nonnull
