@@ -60,6 +60,8 @@ public class BurnerGun extends ToolItem{
     private static final int base_coolDown = 20*5;
     private static final int base_use = 100;
     public static final int base_use_buffer = 100_000;
+    public static final int base_heat_buffer = 10_000;
+
     IRecipeType<? extends AbstractCookingRecipe> recipeType = IRecipeType.SMELTING;
     private static final List<Item> smeltingFilter = new ArrayList<Item>(){
         {
@@ -67,7 +69,6 @@ public class BurnerGun extends ToolItem{
             add(Items.IRON_INGOT);
             add(Items.GOLD_INGOT);
         }
-
     };
 
     public BurnerGun() {
@@ -161,6 +162,9 @@ public class BurnerGun extends ToolItem{
 
         if (!nbt.contains("FuelValue")){
             nbt.putInt("FuelValue", 0);
+        }
+        if (!nbt.contains("HeatValue")){
+            nbt.putInt("HeatValue", 0);
         }
         if (!nbt.contains("HarvestLevel")){
             nbt.putInt("HarvestLevel", 2);
@@ -533,11 +537,10 @@ public class BurnerGun extends ToolItem{
             setFuelValue(stack, 0, player);
             if (state.getMaterial() != Material.AIR){
                 setNBT(stack);
-                stack.getTag().putInt("CoolDown", 20); //delay between each use
                 stack.addEnchantment(Enchantments.FORTUNE, getFortune(stack));
                 stack.addEnchantment(Enchantments.SILK_TOUCH, getSilkTouch(stack));
                 if (getfuelValue(stack) >= getUseValue(stack)){
-                    player.playSound(SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.VOICE, 0.8f, 1.0f);
+                    player.playSound(SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.VOICE, 0.5f, 1.0f);
                     breakBlock(stack, state, block, pos, player, world, ray);
                     areaMine(state, world, stack,  pos, player, ray);
                 }
