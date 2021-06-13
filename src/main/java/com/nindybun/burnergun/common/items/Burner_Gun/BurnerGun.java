@@ -533,7 +533,7 @@ public class BurnerGun extends ToolItem{
             setFuelValue(stack, 0, player);
             if (state.getMaterial() != Material.AIR){
                 setNBT(stack);
-                stack.getTag().putInt("CoolDown", 40); //delay between each use
+                stack.getTag().putInt("CoolDown", 20); //delay between each use
                 stack.addEnchantment(Enchantments.FORTUNE, getFortune(stack));
                 stack.addEnchantment(Enchantments.SILK_TOUCH, getSilkTouch(stack));
                 if (getfuelValue(stack) >= getUseValue(stack)){
