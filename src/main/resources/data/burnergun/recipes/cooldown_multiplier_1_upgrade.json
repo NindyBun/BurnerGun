@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "ioi",
+    "oro",
+    "ioi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "r": {
+      "item": "burnergun:base_tier_1"
+    },
+    "o": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  "result":
+  {
+    "item": "burnergun:cooldown_multiplier_1_upgrade",
+    "count": 1
+  }
+}

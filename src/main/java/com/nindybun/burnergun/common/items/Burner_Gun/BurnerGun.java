@@ -56,11 +56,9 @@ import java.util.function.Supplier;
 
 public class BurnerGun extends ToolItem{
     private static final Set<Block> EFFECTIVE = Sets.newHashSet();
-    private static final int base_use_timer = (int)(20*2);
-    private static final int base_coolDown = 20*5;
     private static final int base_use = 100;
     public static final int base_use_buffer = 100_000;
-    public static final int base_heat_buffer = 1_000;
+    public static final int base_heat_buffer = 100_000;
 
     IRecipeType<? extends AbstractCookingRecipe> recipeType = IRecipeType.SMELTING;
     private static final List<Item> smeltingFilter = new ArrayList<Item>(){
@@ -78,7 +76,7 @@ public class BurnerGun extends ToolItem{
     }
 
     private enum ModTier implements IItemTier {
-        TIER(4, 0, 0, 4, 0, null);
+        TIER(0, 0, 0, 4, 0, null);
 
         private final int harvestlevel;
         private final int maxUses;
@@ -175,9 +173,6 @@ public class BurnerGun extends ToolItem{
         if (!nbt.contains("CoolDown")){
             nbt.putInt("CoolDown", 0);
         }
-        if (!nbt.contains("Timer")){
-            nbt.putInt("Timer", 0);
-        }
         stack.setTag(nbt);
     }
 ////////////////////////////////////////////////////////////////////////
@@ -229,11 +224,10 @@ public class BurnerGun extends ToolItem{
         }else if (use == 1 && handler.getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
             stack.getTag().putInt("HeatValue", getheatValue(stack)+(int)getUseValue(stack));
             if (getheatValue(stack) >= base_heat_buffer){
-                //stack.getTag().putInt("Timer", 25); //about 5 seconds
                 player.getCooldownTracker().setCooldown(this, 100);
                 stack.getTag().putInt("CoolDown", 0);
             }else{
-                stack.getTag().putInt("CoolDown", 40); //about 2 seconds
+                stack.getTag().putInt("CoolDown", 20); //about 2 seconds
             }
         }
 
@@ -248,12 +242,22 @@ public class BurnerGun extends ToolItem{
     public double getFuelEfficiency(ItemStack stack){
         return getUpgradeByUpgrade(stack, Upgrade.FUEL_EFFICIENCY_1) != null ? getUpgradeByUpgrade(stack, Upgrade.FUEL_EFFICIENCY_1).getExtraValue() : 0.00;
     }
+    public double getHeatEfficiency(ItemStack stack){
+        return getUpgradeByUpgrade(stack, Upgrade.HEAT_EFFICIENCY_1) != null ? getUpgradeByUpgrade(stack, Upgrade.HEAT_EFFICIENCY_1).getExtraValue() : 0.00;
+    }
+    public double getCooldownMultiplier(ItemStack stack){
+        return getUpgradeByUpgrade(stack, Upgrade.COOLDOWN_MULTIPLIER_1) != null ? getUpgradeByUpgrade(stack, Upgrade.COOLDOWN_MULTIPLIER_1).getExtraValue() : 0.00;
+    }
 ////////////////////////////////////////////////////////////////////////
     public double getUseValue(ItemStack stack){
+        IItemHandler handler = getHandler(stack);
         int extraUse = 0;
         List<UpgradeCard> upgrades = getUpgrades(stack);
         if (!upgrades.isEmpty()){
             extraUse = upgrades.stream().mapToInt(upgradeCard -> upgradeCard.getUpgrade().getCost()).sum();
+        }
+        if (handler.getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())) {
+            return (base_use + extraUse) - ((base_use + extraUse) * getHeatEfficiency(stack));
         }
         return (base_use + extraUse) - ((base_use + extraUse) * getFuelEfficiency(stack));
     }
@@ -278,7 +282,6 @@ public class BurnerGun extends ToolItem{
         return stack.getTag().getInt("HarvestLevel");
     }
     public int getCoolDown(ItemStack stack) { return stack.getTag().getInt("CoolDown"); }
-    public int getTimer(ItemStack stack) { return stack.getTag().getInt("Timer"); }
     ////////////////////////////////////////////////////////////////////////
     //Returns Upgrade cards
     public List<UpgradeCard> getUpgrades(ItemStack stack){
@@ -503,12 +506,12 @@ public class BurnerGun extends ToolItem{
                             4 -> stronk
          */
 
-        if (getCoolDown(stack) > 0 && !((PlayerEntity)entityIn).getCooldownTracker().hasCooldown(this)){
+        if (getCoolDown(stack) > 0){
             stack.getTag().putInt("CoolDown", (getCoolDown(stack) - 1) < 0 ? 0 : (getCoolDown(stack) - 1));
         }
 
         if (getCoolDown(stack) == 0 && !((PlayerEntity)entityIn).getCooldownTracker().hasCooldown(this)){
-            stack.getTag().putInt("HeatValue", (getheatValue(stack) - 10) < 0 ? 0 : (getheatValue(stack) - 10));
+            stack.getTag().putInt("HeatValue", (getheatValue(stack) - (int)(10*getCooldownMultiplier(stack))) < 0 ? 0 : (getheatValue(stack) - (int)(10*getCooldownMultiplier(stack))));
         }
 
         if (getfuelValue(stack) >= base_use_buffer *3/4 || getHandler(stack).getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
@@ -554,6 +557,9 @@ public class BurnerGun extends ToolItem{
         ItemStack stack = player.getHeldItem(handIn).getStack();
         IItemHandler handler = getHandler(stack);
         if (!world.isRemote && (player.isSneaking() || !player.isSneaking()) && !player.abilities.isCreativeMode){
+            if (getheatValue(stack) >= base_heat_buffer) {
+                return ActionResult.resultConsume(stack);
+            }
             BlockRayTraceResult ray = WorldUtil.getLookingAt(player, RayTraceContext.FluidMode.NONE, getRange(stack));
             BlockPos pos = ray.getPos();
             BlockState state = world.getBlockState(pos);

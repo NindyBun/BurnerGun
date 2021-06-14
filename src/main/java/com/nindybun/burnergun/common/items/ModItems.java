@@ -61,4 +61,13 @@ public class ModItems {
     public static final RegistryObject<Item> FUEL_EFFICIENCY_4 = UPGRADE_ITEMS.register("fuel_efficiency_4_upgrade", Upgrade.FUEL_EFFICIENCY_4::getCard);
     public static final RegistryObject<Item> FUEL_EFFICIENCY_5 = UPGRADE_ITEMS.register("fuel_efficiency_5_upgrade", Upgrade.FUEL_EFFICIENCY_5::getCard);
 
+    public static final RegistryObject<Item> HEAT_EFFICIENCY_1 = UPGRADE_ITEMS.register("heat_efficiency_1_upgrade", Upgrade.HEAT_EFFICIENCY_1::getCard);
+    public static final RegistryObject<Item> HEAT_EFFICIENCY_2 = UPGRADE_ITEMS.register("heat_efficiency_2_upgrade", Upgrade.HEAT_EFFICIENCY_2::getCard);
+    public static final RegistryObject<Item> HEAT_EFFICIENCY_3 = UPGRADE_ITEMS.register("heat_efficiency_3_upgrade", Upgrade.HEAT_EFFICIENCY_3::getCard);
+    public static final RegistryObject<Item> HEAT_EFFICIENCY_4 = UPGRADE_ITEMS.register("heat_efficiency_4_upgrade", Upgrade.HEAT_EFFICIENCY_4::getCard);
+    public static final RegistryObject<Item> HEAT_EFFICIENCY_5 = UPGRADE_ITEMS.register("heat_efficiency_5_upgrade", Upgrade.HEAT_EFFICIENCY_5::getCard);
+
+    public static final RegistryObject<Item> COOLDOWN_MULTIPLIER_1 = UPGRADE_ITEMS.register("cooldown_multiplier_1_upgrade", Upgrade.COOLDOWN_MULTIPLIER_1::getCard);
+    public static final RegistryObject<Item> COOLDOWN_MULTIPLIER_2 = UPGRADE_ITEMS.register("cooldown_multiplier_2_upgrade", Upgrade.COOLDOWN_MULTIPLIER_2::getCard);
+    public static final RegistryObject<Item> COOLDOWN_MULTIPLIER_3 = UPGRADE_ITEMS.register("cooldown_multiplier_3_upgrade", Upgrade.COOLDOWN_MULTIPLIER_3::getCard);
 }

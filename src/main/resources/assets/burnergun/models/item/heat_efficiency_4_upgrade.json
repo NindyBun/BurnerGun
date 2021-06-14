@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures":
+  {
+    "layer0": "burnergun:items/heat_efficiency_4_upgrade"
+  }
+}

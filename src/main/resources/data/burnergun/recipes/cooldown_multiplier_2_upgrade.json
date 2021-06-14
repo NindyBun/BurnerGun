@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "ioi",
+    "trt",
+    "iti"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "r": {
+      "item": "burnergun:cooldown_multiplier_1_upgrade"
+    },
+    "o": {
+      "item": "burnergun:base_tier_2"
+    },
+    "t": {
+      "item": "minecraft:packed_ice"
+    }
+  },
+  "result":
+  {
+    "item": "burnergun:cooldown_multiplier_2_upgrade",
+    "count": 1
+  }
+}
