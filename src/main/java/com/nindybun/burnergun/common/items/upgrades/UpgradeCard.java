@@ -24,7 +24,8 @@ public class UpgradeCard extends Item {
             tooltip.add(new StringTextComponent("Cost: " +  (!(this.getUpgrade().equals(Upgrade.AUTO_SMELT)) ? upgrade.getCost()+"" : "[0, 75]")).mergeStyle(TextFormatting.AQUA));
             tooltip.add(new TranslationTextComponent(this.upgrade.getToolTip())
                     .appendString(this.getUpgrade().getBaseName().equals(Upgrade.FOCAL_POINT_1.getBaseName()) ? this.upgrade.getExtraValue() + " blocks." : "")
-                    .appendString(this.getUpgrade().getBaseName().equals(Upgrade.FUEL_EFFICIENCY_1.getBaseName()) ? this.upgrade.getExtraValue()*100 + "%" : "")
+                    .appendString(this.getUpgrade().getBaseName().equals(Upgrade.COOLDOWN_MULTIPLIER_1.getBaseName()) ? this.upgrade.getExtraValue() + "" : "")
+                    .appendString(this.getUpgrade().getBaseName().equals(Upgrade.FUEL_EFFICIENCY_1.getBaseName()) || this.getUpgrade().getBaseName().equals(Upgrade.HEAT_EFFICIENCY_1.getBaseName()) ? this.upgrade.getExtraValue()*100 + "%" : "")
                     .appendString(this.getUpgrade().getBaseName().equals(Upgrade.HORIZONTAL_EXPANSION_1.getBaseName()) ||
                             this.getUpgrade().getBaseName().equals(Upgrade.VERTICAL_EXPANSION_1.getBaseName()) ? this.upgrade.getTier()*2+1 + "" : "")
                     .mergeStyle(TextFormatting.GRAY));

@@ -33,8 +33,8 @@ public enum Upgrade {
     HEAT_EFFICIENCY_4("heat_efficiency_4", 4, 0, 1, 0.75, true),
     HEAT_EFFICIENCY_5("heat_efficiency_5", 5, 0, 1, 0.90, true),
     COOLDOWN_MULTIPLIER_1("cooldown_multiplier_1", 1, 0, 1, 2.00, true),
-    COOLDOWN_MULTIPLIER_2("cooldown_multiplier_2", 2, 0, 1, 3.50, true),
-    COOLDOWN_MULTIPLIER_3("cooldown_multiplier_3", 3, 0, 1, 5.00, true),
+    COOLDOWN_MULTIPLIER_2("cooldown_multiplier_2", 2, 0, 1, 5.00, true),
+    COOLDOWN_MULTIPLIER_3("cooldown_multiplier_3", 3, 0, 1, 10.00, true),
 
     MAGNET("magnet", -1, 75, 1, 0, true),
     SILK_TOUCH("silk_touch", -1, 150, 1, 0, true),
