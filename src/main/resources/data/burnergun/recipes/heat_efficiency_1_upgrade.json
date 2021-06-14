@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "igi",
+    "grg",
+    "igi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/gold"
+    },
+    "g": {
+      "item": "minecraft:iron_block"
+    },
+    "r": {
+      "item": "burnergun:base_tier_1"
+    }
+  },
+  "result":
+  {
+    "item": "burnergun:heat_efficiency_1_upgrade",
+    "count": 1
+  }
+}
