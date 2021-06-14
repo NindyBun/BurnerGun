@@ -35,6 +35,7 @@ public enum Upgrade {
     AUTO_SMELT("auto_smelt", -1, (int)Math.floor(Math.random()*75), 1, 0, true),
     TRASH("trash", -1, 75, 1, 0, true),
     UPGRADE_BAG("upgrade_bag", -1, 0, 1, 0, false),
+    UNIFUEL("unifuel", -1, 0, 1, 0, false),
     ;
 
     private final String name;

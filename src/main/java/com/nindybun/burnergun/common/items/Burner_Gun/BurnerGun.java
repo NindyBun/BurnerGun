@@ -60,7 +60,7 @@ public class BurnerGun extends ToolItem{
     private static final int base_coolDown = 20*5;
     private static final int base_use = 100;
     public static final int base_use_buffer = 100_000;
-    public static final int base_heat_buffer = 10_000;
+    public static final int base_heat_buffer = 100_000;
 
     IRecipeType<? extends AbstractCookingRecipe> recipeType = IRecipeType.SMELTING;
     private static final List<Item> smeltingFilter = new ArrayList<Item>(){
@@ -130,9 +130,12 @@ public class BurnerGun extends ToolItem{
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if (stack.hasTag() && stack.getTag().contains("FuelValue"))
+        IItemHandler handler = getHandler(stack);
+        if (stack.getTag().contains("FuelValue") && !handler.getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem()))
         {
             tooltip.add(new StringTextComponent("Fuel Level: " + getfuelValue(stack) + " / " + base_use_buffer).mergeStyle(TextFormatting.YELLOW));
+        }else if (handler.getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
+            tooltip.add(new StringTextComponent("Using the heat of the universe!").mergeStyle(TextFormatting.YELLOW));
         }
         tooltip.add(new StringTextComponent("Press " + Keybinds.burnergun_gui_key.getKey().toString().toUpperCase() + " to open GUI").mergeStyle(TextFormatting.GRAY));
 
@@ -219,11 +222,20 @@ public class BurnerGun extends ToolItem{
 
     }
     public void setFuelValue(ItemStack stack, int use, PlayerEntity player){
-        refuel(stack, player);
-        stack.getTag().putInt("FuelValue", getfuelValue(stack)-(int)getUseValue(stack)*use);
+        IItemHandler handler = getHandler(stack);
+        if (!handler.getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
+            refuel(stack, player);
+            stack.getTag().putInt("FuelValue", getfuelValue(stack)-(int)getUseValue(stack)*use);
+        }else if (handler.getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
+            stack.getTag().putInt("HeatValue", getheatValue(stack)+(int)getUseValue(stack)*use);
+        }
+
     }
     public int getfuelValue(ItemStack stack) {
         return stack.getTag().getInt("FuelValue");
+    }
+    public int getheatValue(ItemStack stack) {
+        return stack.getTag().getInt("HeatValue");
     }
 /////////////////////////////////////////////////////////////////////////////
     public double getFuelEfficiency(ItemStack stack){
@@ -388,12 +400,13 @@ public class BurnerGun extends ToolItem{
     }
 
     public Boolean breakBlock(ItemStack stack, BlockState state, Block block, BlockPos pos, PlayerEntity player, World world, BlockRayTraceResult ray){
+        IItemHandler handler = getHandler(stack);
         List<ItemStack> list = state.getDrops(new LootContext.Builder((ServerWorld) world)
                 .withParameter(LootParameters.TOOL, stack)
                 .withParameter(LootParameters.field_237457_g_, new Vector3d(pos.getX(), pos.getY(), pos.getZ()))
                 .withParameter(LootParameters.BLOCK_STATE, state)
         );
-        if (getfuelValue(stack) >= getUseValue(stack) && !(block instanceof Light)){
+        if ((getfuelValue(stack) >= getUseValue(stack) || handler.getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())) && !(block instanceof Light)){
             setFuelValue(stack, 1, player);
             if (state.getBlockHardness(world, pos) == -1.0 || state.getHarvestLevel() > getHarvestLevel(stack))
                 return false;
@@ -483,14 +496,15 @@ public class BurnerGun extends ToolItem{
                             4 -> stronk
          */
 
-        if (getTimer(stack) > 0){
-            stack.getTag().putInt("Timer", getTimer(stack)-1);
-        }
-        if (getCoolDown(stack) > 0 && getTimer(stack) == 0){
+        if (getCoolDown(stack) > 0 && !((PlayerEntity)entityIn).getCooldownTracker().hasCooldown(this)){
             stack.getTag().putInt("CoolDown", (getCoolDown(stack) - 1) < 0 ? 0 : (getCoolDown(stack) - 1));
         }
 
-        if (getfuelValue(stack) >= base_use_buffer *3/4){
+        if (getCoolDown(stack) == 0){
+            stack.getTag().putInt("HeatValue", (getheatValue(stack) - 10) < 0 ? 0 : (getheatValue(stack) - 10));
+        }
+
+        if (getfuelValue(stack) >= base_use_buffer *3/4 || getHandler(stack).getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
             stack.getTag().putInt("HarvestLevel", 4);
         }else if (getfuelValue(stack) < base_use_buffer *3/4){
             stack.getTag().putInt("HarvestLevel", 2);
@@ -503,7 +517,7 @@ public class BurnerGun extends ToolItem{
         if (EnchantmentHelper.getEnchantments(stack).get(Enchantments.FIRE_ASPECT) == null){
             if (getfuelValue(stack) >= base_use_buffer /2 && getfuelValue(stack) < base_use_buffer *3/4){
                 stack.addEnchantment(Enchantments.FIRE_ASPECT, 1);
-            }else if (getfuelValue(stack) >= base_use_buffer *3/4){
+            }else if (getfuelValue(stack) >= base_use_buffer *3/4 || getHandler(stack).getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
                 stack.addEnchantment(Enchantments.FIRE_ASPECT, 2);
             }
         }else if (EnchantmentHelper.getEnchantments(stack).get(Enchantments.FIRE_ASPECT) == 2){
@@ -520,8 +534,10 @@ public class BurnerGun extends ToolItem{
     @Override
     public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         int fireAspect = EnchantmentHelper.getEnchantments(stack).get(Enchantments.FIRE_ASPECT) != null ? EnchantmentHelper.getEnchantments(stack).get(Enchantments.FIRE_ASPECT) : 0;
-        stack.getTag().putInt("FuelValue", getfuelValue(stack)-base_use*(fireAspect*2 == 0 ? 1 : fireAspect*2));
-        return super.hitEntity(stack, target, attacker);
+        if (!getHandler(stack).getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
+            stack.getTag().putInt("FuelValue", getfuelValue(stack)-base_use*(fireAspect*2 == 0 ? 1 : fireAspect*2));
+        }
+       return super.hitEntity(stack, target, attacker);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -529,6 +545,7 @@ public class BurnerGun extends ToolItem{
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
         ItemStack stack = player.getHeldItem(handIn).getStack();
+        IItemHandler handler = getHandler(stack);
         if (!world.isRemote && stack.getTag().getInt("CoolDown") == 0 && (player.isSneaking() || !player.isSneaking()) && !player.abilities.isCreativeMode){
             BlockRayTraceResult ray = WorldUtil.getLookingAt(player, RayTraceContext.FluidMode.NONE, getRange(stack));
             BlockPos pos = ray.getPos();
@@ -539,7 +556,18 @@ public class BurnerGun extends ToolItem{
                 setNBT(stack);
                 stack.addEnchantment(Enchantments.FORTUNE, getFortune(stack));
                 stack.addEnchantment(Enchantments.SILK_TOUCH, getSilkTouch(stack));
-                if (getfuelValue(stack) >= getUseValue(stack)){
+                if (getfuelValue(stack) >= getUseValue(stack) || handler.getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
+                    if (handler.getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
+                        stack.getTag().putInt("HeatValue", (int)getUseValue(stack));
+                        LOGGER.info(stack.getTag().getInt("HeatValue"));
+                        if (getheatValue(stack) >= base_heat_buffer){
+                            //stack.getTag().putInt("Timer", 25); //about 5 seconds
+                            player.getCooldownTracker().setCooldown(this, 100);
+                        }else{
+                            stack.getTag().putInt("Cooldown", 20); //about 3 seconds
+                        }
+                        LOGGER.info(stack.getTag().getInt("Cooldown"));
+                    }
                     player.playSound(SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.VOICE, 0.5f, 1.0f);
                     breakBlock(stack, state, block, pos, player, world, ray);
                     areaMine(state, world, stack,  pos, player, ray);
