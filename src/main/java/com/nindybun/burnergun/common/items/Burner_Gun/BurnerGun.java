@@ -60,7 +60,7 @@ public class BurnerGun extends ToolItem{
     private static final int base_coolDown = 20*5;
     private static final int base_use = 100;
     public static final int base_use_buffer = 100_000;
-    public static final int base_heat_buffer = 100_000;
+    public static final int base_heat_buffer = 1_000;
 
     IRecipeType<? extends AbstractCookingRecipe> recipeType = IRecipeType.SMELTING;
     private static final List<Item> smeltingFilter = new ArrayList<Item>(){
@@ -226,8 +226,15 @@ public class BurnerGun extends ToolItem{
         if (!handler.getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
             refuel(stack, player);
             stack.getTag().putInt("FuelValue", getfuelValue(stack)-(int)getUseValue(stack)*use);
-        }else if (handler.getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
-            stack.getTag().putInt("HeatValue", getheatValue(stack)+(int)getUseValue(stack)*use);
+        }else if (use == 1 && handler.getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
+            stack.getTag().putInt("HeatValue", getheatValue(stack)+(int)getUseValue(stack));
+            if (getheatValue(stack) >= base_heat_buffer){
+                //stack.getTag().putInt("Timer", 25); //about 5 seconds
+                player.getCooldownTracker().setCooldown(this, 100);
+                stack.getTag().putInt("CoolDown", 0);
+            }else{
+                stack.getTag().putInt("CoolDown", 40); //about 2 seconds
+            }
         }
 
     }
@@ -500,7 +507,7 @@ public class BurnerGun extends ToolItem{
             stack.getTag().putInt("CoolDown", (getCoolDown(stack) - 1) < 0 ? 0 : (getCoolDown(stack) - 1));
         }
 
-        if (getCoolDown(stack) == 0){
+        if (getCoolDown(stack) == 0 && !((PlayerEntity)entityIn).getCooldownTracker().hasCooldown(this)){
             stack.getTag().putInt("HeatValue", (getheatValue(stack) - 10) < 0 ? 0 : (getheatValue(stack) - 10));
         }
 
@@ -546,7 +553,7 @@ public class BurnerGun extends ToolItem{
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
         ItemStack stack = player.getHeldItem(handIn).getStack();
         IItemHandler handler = getHandler(stack);
-        if (!world.isRemote && stack.getTag().getInt("CoolDown") == 0 && (player.isSneaking() || !player.isSneaking()) && !player.abilities.isCreativeMode){
+        if (!world.isRemote && (player.isSneaking() || !player.isSneaking()) && !player.abilities.isCreativeMode){
             BlockRayTraceResult ray = WorldUtil.getLookingAt(player, RayTraceContext.FluidMode.NONE, getRange(stack));
             BlockPos pos = ray.getPos();
             BlockState state = world.getBlockState(pos);
@@ -557,17 +564,6 @@ public class BurnerGun extends ToolItem{
                 stack.addEnchantment(Enchantments.FORTUNE, getFortune(stack));
                 stack.addEnchantment(Enchantments.SILK_TOUCH, getSilkTouch(stack));
                 if (getfuelValue(stack) >= getUseValue(stack) || handler.getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
-                    if (handler.getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
-                        stack.getTag().putInt("HeatValue", (int)getUseValue(stack));
-                        LOGGER.info(stack.getTag().getInt("HeatValue"));
-                        if (getheatValue(stack) >= base_heat_buffer){
-                            //stack.getTag().putInt("Timer", 25); //about 5 seconds
-                            player.getCooldownTracker().setCooldown(this, 100);
-                        }else{
-                            stack.getTag().putInt("Cooldown", 20); //about 3 seconds
-                        }
-                        LOGGER.info(stack.getTag().getInt("Cooldown"));
-                    }
                     player.playSound(SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.VOICE, 0.5f, 1.0f);
                     breakBlock(stack, state, block, pos, player, world, ray);
                     areaMine(state, world, stack,  pos, player, ray);

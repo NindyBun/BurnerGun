@@ -65,7 +65,7 @@ public class FuelValueRenderer {
             fontRenderer.drawString(event.getMatrixStack(), level+"", 61, event.getWindow().getScaledHeight()-12, color.getRGB());
         }else{
             fontRenderer.drawString(event.getMatrixStack(), "Heat level: ", 6, event.getWindow().getScaledHeight()-12, Color.WHITE.getRGB());
-            fontRenderer.drawString(event.getMatrixStack(), (hLevel/base_heat_buffer)+"%", 61, event.getWindow().getScaledHeight()-12, color.getRGB());
+            fontRenderer.drawString(event.getMatrixStack(), (hLevel)+"%", 61, event.getWindow().getScaledHeight()-12, color.getRGB());
         }
 
     }
