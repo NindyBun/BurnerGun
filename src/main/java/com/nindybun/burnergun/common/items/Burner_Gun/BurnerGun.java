@@ -475,12 +475,13 @@ public class BurnerGun extends ToolItem{
         if (ray == null)
             return;
         Vector3d size = getDim(ray, xRad, yRad, player);
+        BlockPos nPos = pos;
         if (yRad > 0 && xRad == 0 && ray.getFace().getAxis().isVertical()){
-            pos = new BlockPos(pos.getX(), pos.getY() - yRad*ray.getFace().getDirectionVec().getY(), pos.getZ());
+            nPos = new BlockPos(pos.getX(), pos.getY() - yRad*ray.getFace().getDirectionVec().getY(), pos.getZ());
         }
-        for (int xPos = pos.getX() - (int)size.getX(); xPos <= pos.getX() + (int)size.getX(); ++xPos){
-            for (int yPos = pos.getY() - (int)size.getY(); yPos <= pos.getY() + (int)size.getY(); ++yPos){
-                for (int zPos = pos.getZ() - (int)size.getZ(); zPos <= pos.getZ() + (int)size.getZ(); ++zPos){
+        for (int xPos = nPos.getX() - (int)size.getX(); xPos <= nPos.getX() + (int)size.getX(); ++xPos){
+            for (int yPos = nPos.getY() - (int)size.getY(); yPos <= nPos.getY() + (int)size.getY(); ++yPos){
+                for (int zPos = nPos.getZ() - (int)size.getZ(); zPos <= nPos.getZ() + (int)size.getZ(); ++zPos){
                     if (!pos.equals(new BlockPos(xPos, yPos, zPos))){
                         BlockPos thePos = new BlockPos(xPos, yPos, zPos);
                         BlockState theState = world.getBlockState(thePos);
@@ -556,7 +557,7 @@ public class BurnerGun extends ToolItem{
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
         ItemStack stack = player.getHeldItem(handIn).getStack();
         IItemHandler handler = getHandler(stack);
-        if (!world.isRemote && (player.isSneaking() || !player.isSneaking()) && !player.abilities.isCreativeMode){
+        if (!world.isRemote){
             if (getheatValue(stack) >= base_heat_buffer) {
                 return ActionResult.resultConsume(stack);
             }
@@ -571,8 +572,13 @@ public class BurnerGun extends ToolItem{
                 stack.addEnchantment(Enchantments.SILK_TOUCH, getSilkTouch(stack));
                 if (getfuelValue(stack) >= getUseValue(stack) || handler.getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
                     player.playSound(SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.VOICE, 0.5f, 1.0f);
-                    breakBlock(stack, state, block, pos, player, world, ray);
-                    areaMine(state, world, stack,  pos, player, ray);
+                    if (player.isCrouching()){
+                        breakBlock(stack, state, block, pos, player, world, ray);
+                    }else{
+                        breakBlock(stack, state, block, pos, player, world, ray);
+                        areaMine(state, world, stack,  pos, player, ray);
+                    }
+
                 }
                 stack.getEnchantmentTagList().clear();
             }
