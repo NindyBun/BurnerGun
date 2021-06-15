@@ -10,10 +10,10 @@
     "i": {
       "tag": "forge:ingots/iron"
     },
-    "r": {
+    "o": {
       "item": "burnergun:cooldown_multiplier_2_upgrade"
     },
-    "o": {
+    "r": {
       "item": "burnergun:base_tier_3"
     },
     "t": {

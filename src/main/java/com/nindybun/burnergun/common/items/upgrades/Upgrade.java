@@ -3,11 +3,11 @@ package com.nindybun.burnergun.common.items.upgrades;
 import net.minecraft.item.ItemStack;
 
 public enum Upgrade {
-    TIER_1("base_tier_1", -1, 0, 5, 0, false),
-    TIER_2("base_tier_2", -1, 0, 5, 0, false),
-    TIER_3("base_tier_3", -1, 0, 5, 0, false),
-    TIER_4("base_tier_4", -1, 0, 5, 0, false),
-    TIER_5("base_tier_5", -1, 0, 5, 0, false),
+    TIER_1("base_tier_1", 1, 0, 5, 0, false),
+    TIER_2("base_tier_2", 2, 0, 5, 0, false),
+    TIER_3("base_tier_3", 3, 0, 5, 0, false),
+    TIER_4("base_tier_4", 4, 0, 5, 0, false),
+    TIER_5("base_tier_5", 5, 0, 5, 0, false),
     FORTUNE_1("fortune_1", 1, 100, 1, 0, true),
     FORTUNE_2("fortune_2", 2, 125, 1, 0, true),
     FORTUNE_3("fortune_3", 3, 175, 1, 0, true),

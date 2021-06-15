@@ -13,13 +13,13 @@
     "g": {
       "item": "minecraft:gold_block"
     },
-    "t": {
+    "r": {
       "item": "burnergun:heat_efficiency_2_upgrade"
     },
     "f": {
       "item": "minecraft:diamond_block"
     },
-    "r": {
+    "t": {
       "item": "burnergun:base_tier_3"
     }
   },

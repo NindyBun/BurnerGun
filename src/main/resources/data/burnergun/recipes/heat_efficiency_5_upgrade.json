@@ -13,11 +13,11 @@
     "g": {
       "item": "minecraft:emerald_block"
     },
-    "t": {
+    "r": {
       "item": "burnergun:heat_efficiency_4_upgrade"
     },
-    "r": {
-      "item": "burnergun:base_tier_55"
+    "t": {
+      "item": "burnergun:base_tier_5"
     }
   },
   "result":
