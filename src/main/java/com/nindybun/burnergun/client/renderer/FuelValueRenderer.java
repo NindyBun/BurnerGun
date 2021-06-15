@@ -12,6 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -64,8 +65,12 @@ public class FuelValueRenderer {
             fontRenderer.drawString(event.getMatrixStack(), "Fuel level: ", 6, event.getWindow().getScaledHeight()-12, Color.WHITE.getRGB());
             fontRenderer.drawString(event.getMatrixStack(), level+"", 61, event.getWindow().getScaledHeight()-12, color.getRGB());
         }else{
+            double heat = (double)hLevel/base_heat_buffer*100;
+            String heatString = heat+"";
+            int deci = heatString.lastIndexOf(".");
+            heatString = heatString.substring(0, deci+2);
             fontRenderer.drawString(event.getMatrixStack(), "Heat level: ", 6, event.getWindow().getScaledHeight()-12, Color.WHITE.getRGB());
-            fontRenderer.drawString(event.getMatrixStack(), (hLevel/base_heat_buffer*100)+"%", 61, event.getWindow().getScaledHeight()-12, color.getRGB());
+            fontRenderer.drawString(event.getMatrixStack(), heatString+"%", 61, event.getWindow().getScaledHeight()-12, color.getRGB());
         }
 
     }

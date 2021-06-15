@@ -511,7 +511,7 @@ public class BurnerGun extends ToolItem{
         }
 
         if (getCoolDown(stack) == 0 && !((PlayerEntity)entityIn).getCooldownTracker().hasCooldown(this)){
-            stack.getTag().putInt("HeatValue", (getheatValue(stack) - (int)(10*getCooldownMultiplier(stack))) < 0 ? 0 : (getheatValue(stack) - (int)(10*getCooldownMultiplier(stack))));
+            stack.getTag().putInt("HeatValue", (getheatValue(stack) - (int)(25*getCooldownMultiplier(stack))) < 0 ? 0 : (getheatValue(stack) - (int)(25*getCooldownMultiplier(stack))));
         }
 
         if (getfuelValue(stack) >= base_use_buffer *3/4 || getHandler(stack).getStackInSlot(0).getItem().equals(Upgrade.UNIFUEL.getCard().getItem())){
